@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support — Iepen Fryske Stavering</title>
+<meta name="description" content="Help and frequently asked questions for the Iepen Fryske Stavering Word add-in.">
+<link rel="icon" href="assets/icon-32.png">
+<style>
+:root {
+  --ink: #16233a; --muted: #56627a; --paper: #ffffff; --sky: #eef3fb; --rule: #d6deeb;
+  --blue: #1b4fa3; --focus: #1b4fa3;
+  --serif: "Iowan Old Style", "Charter", "Palatino", Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --ink: #e9eef7; --muted: #a3aec2; --paper: #111827; --sky: #1a2436; --rule: #2c3a52;
+          --blue: #7fa9ec; --focus: #7fa9ec; }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--sans); }
+main { max-width: 700px; margin: 0 auto; padding: 56px 24px 80px; position: relative; }
+.pompebled { position: fixed; top: -60px; right: -90px; width: min(62vw, 520px); height: auto; opacity: .08;
+             pointer-events: none; z-index: 0; }
+@media (prefers-color-scheme: dark) { .pompebled { opacity: .14; } }
+@media (max-width: 560px) { .pompebled { top: -30px; right: -60px; } body { font-size: 16px; } h1 { font-size: 32px; } }
+a { color: var(--blue); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+h1 { font: 600 40px/1.15 var(--serif); letter-spacing: -0.01em; margin: 0 0 8px; }
+h2 { font: 600 23px/1.25 var(--serif); margin: 40px 0 10px; }
+p, ul { margin: 0 0 14px; }
+ul { padding-left: 22px; }
+li { margin-bottom: 6px; }
+code { font: 14px ui-monospace, "SF Mono", Menlo, monospace; background: var(--sky); padding: 1px 5px; border-radius: 4px;
+       overflow-wrap: anywhere; }
+.meta { color: var(--muted); font-size: 15px; margin-bottom: 28px; }
+.summary { background: var(--sky); border-radius: 12px; padding: 18px 22px; margin: 0 0 8px; }
+.summary p:last-child { margin-bottom: 0; }
+h3 { font-size: 17px; margin: 24px 0 4px; }
+code.nw { white-space: nowrap; }
+footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+<!-- Pompeblêd: shape from the Frisian flag (P.H. Wagemakers & Joh. Koopmans, 1954), public domain via Wikimedia Commons -->
+<svg class="pompebled" viewBox="-13.5 -16.5 30 30" aria-hidden="true" focusable="false"><path d="M0,12A16.143,16.143 0 0,1 -14,-4A7,8 0 0,1 -7,-12A6,8 0 0,1 -1,-5A1,1 0 1,0 1,-5A6,8 0 0,1 7,-12A7,8 0 0,1 14,-4A16.143,16.143 0 0,1 0,12z" fill="#ea2117" transform="rotate(34.695)"/></svg>
+<main>
+  <h1>Support</h1>
+  <p class="meta">Iepen Fryske Stavering</p>
+
+  <div class="summary">
+    <p><strong>Need help or found a bug?</strong> Please <a href="https://github.com/iappyx/iepen-fryske-stavering/issues/new">open an issue on GitHub</a>. Tell us which Word you use (Mac, Windows or web, and its version) and what happened. The <em>Diagnoaze</em> section in the panel shows useful details: click the title <em>Iepen Fryske Stavering</em> at the top of the panel five times to show it. Please don’t include private text from your documents.</p>
+  </div>
+
+  <h2>Getting started</h2>
+  <p><strong>Mark your Frisian text first.</strong> The add-in only checks text that is marked as Frisian. Select the text and click <em>Seleksje as Frysk</em> in the panel, or <em>Hiel dokumint as Frysk</em> for everything. Word then stops checking that text as Dutch or English, and the add-in checks it instead.</p>
+  <p><strong>Red and blue:</strong> a red squiggle means the word isn’t in the word list. A blue squiggle means the word is correct, but the official word list prefers another form, for example <em>achterbân</em> → <em>efterbân</em>.</p>
+
+  <h2>Frequently asked questions</h2>
+
+  <h3>The panel says nothing is marked as Frisian</h3>
+  <p>Select your Frisian text and click <em>Seleksje as Frysk</em>, or use <em>Hiel dokumint as Frysk</em>. Text you type in a Frisian paragraph stays Frisian. Pasted text keeps its own language, so mark it again if needed.</p>
+
+  <h3>How do I unmark text that isn’t Frisian?</h3>
+  <p>Select it, choose <em>Tools → Language</em> (on Windows: <em>Review → Language → Set Proofing Language</em>) and pick the right language. The panel picks up the change as soon as you click in the text again.</p>
+
+  <h3>Word still marks Frisian words with its own Dutch or English squiggles</h3>
+  <p>That text isn’t marked as Frisian yet. Mark it with the buttons in the panel.</p>
+
+  <h3>I see the panel, but no squiggles in the text</h3>
+  <p>Squiggles in the text need a recent Word: on the Mac, version 16.85 or newer with a Microsoft 365 subscription. Also check that <em>Streekjes yn ’e tekst</em> is ticked in the panel. Without squiggles, the panel still lists every word with suggestions.</p>
+
+  <h3>In Word on the web, everything is checked, including Dutch</h3>
+  <p>Word on the web doesn’t let add-ins read or set the language of text. There, the add-in checks all text and the marking buttons are hidden. Turn off <em>Streekjes yn ’e tekst</em> if the squiggles on other languages get in the way.</p>
+
+  <h3>How do I remove a word from my personal list?</h3>
+  <p>There is no button for that yet.</p>
+
+  <h2>Privacy</h2>
+  <p>Your text is checked on your own computer and never sent anywhere. See the <a href="privacy.html">privacy statement</a>.</p>
+
+  <footer>
+    <p><a href="./">Iepen Fryske Stavering</a> · <a href="support.html">Support</a> · <a href="terms.html">Terms of use</a> · <a href="privacy.html">Privacy</a></p>
+    <p>© iappyx · Code under the <a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/LICENSE">MIT License</a> · Word list © Fryske Akademy (<a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/dict/gpl.txt">GPL v3</a>)</p>
+  </footer>
+</main>
+</body>
+</html>

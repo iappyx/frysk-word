@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fy">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iepen Fryske Stavering</title>
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<link rel="stylesheet" href="taskpane.css">
+</head>
+<body>
+<header>
+  <div class="title" id="title">Iepen Fryske Stavering</div>
+  <div class="badges"><span id="countErr" class="badge err" hidden></span><span id="countStd" class="badge std" hidden></span></div>
+</header>
+<div id="demo" hidden>
+  <textarea id="demoText" rows="6" spellcheck="false">Us achterbân hat in soad fragen oer it hus oan 'e dyk.</textarea>
+</div>
+<div id="status" class="status"></div>
+<div id="annError" class="warn" hidden></div>
+<main id="list"></main>
+<footer>
+  <div id="mark" hidden>
+    <div class="markbtns"><button id="markSel">Seleksje as Frysk</button><button id="markDoc">Hiel dokumint as Frysk</button></div>
+    <div class="hint">Allinnich tekst dy’t as Frysk markearre is, wurdt kontrolearre. Word slacht dy tekst sels oer.
+      Net Frysk? Selektearje it en kies in oare taal ûnder <em>Tools › Language</em>.</div>
+  </div>
+  <label><input type="checkbox" id="opt-auto"> Automatysk kontrolearje</label>
+  <label id="opt-squiggles-row"><input type="checkbox" id="opt-squiggles"> Streekjes yn ’e tekst</label>
+  <button id="checkNow" class="primary">Opnij kontrolearje</button>
+  <details id="diag" class="fold" hidden><summary>Diagnoaze</summary><pre id="diagText"></pre></details>
+  <div class="credit">© <a href="https://github.com/iappyx/iepen-fryske-stavering" target="_blank" rel="noopener">iappyx</a> (<a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a>) · Wurdlist © Fryske Akademy (<a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/dict/gpl.txt" target="_blank" rel="noopener">GPL v3</a>)</div>
+</footer>
+<script src="speller.js"></script>
+<script src="taskpane.js"></script>
+</body>
+</html>

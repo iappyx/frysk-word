@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iepen Fryske Stavering — Frisian spell checking for Word</title>
+<meta name="description" content="A free Word add-in that checks Frisian spelling with the official word list (Foarkarswurdlist). Works in Word for Mac.">
+<link rel="icon" href="assets/icon-32.png">
+<style>
+:root {
+  --ink: #16233a; --muted: #56627a; --paper: #ffffff; --sky: #eef3fb; --rule: #d6deeb;
+  --blue: #1b4fa3; --red: #d0262f; --focus: #1b4fa3;
+  --serif: "Iowan Old Style", "Charter", "Palatino", Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --ink: #e9eef7; --muted: #a3aec2; --paper: #111827; --sky: #1a2436; --rule: #2c3a52;
+          --blue: #7fa9ec; --red: #ff7a78; --focus: #7fa9ec; }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--sans); }
+main { max-width: 700px; margin: 0 auto; padding: 56px 24px 80px; position: relative; }
+/* pompeblêd from the Frisian flag, a faint watermark behind the page (fixed: never adds scrolling) */
+.pompebled { position: fixed; top: -60px; right: -90px; width: min(62vw, 520px); height: auto; opacity: .08;
+             pointer-events: none; z-index: 0; }
+@media (prefers-color-scheme: dark) { .pompebled { opacity: .14; } }
+@media (max-width: 560px) { .pompebled { top: -30px; right: -60px; } }
+a { color: var(--blue); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+h1 { font: 600 40px/1.15 var(--serif); letter-spacing: -0.01em; margin: 0 0 12px; }
+h2 { font: 600 25px/1.25 var(--serif); margin: 56px 0 12px; }
+h3 { font-size: 17px; margin: 0 0 4px; }
+p { margin: 0 0 14px; }
+.lede { font-size: 19px; color: var(--muted); max-width: 34em; }
+
+/* the page's one bold moment: a sentence being checked */
+.sample { margin: 36px 0 8px; padding: 28px 30px; background: var(--sky); border-radius: 14px;
+          font: 23px/1.8 var(--serif); position: relative; }
+.sq { text-decoration: underline wavy; text-decoration-thickness: 1.5px; text-underline-offset: 6px;
+      text-decoration-skip-ink: none; cursor: help; }
+.sq.err { text-decoration-color: var(--red); }
+.sq.std { text-decoration-color: var(--blue); }
+.tip { position: relative; display: inline-block; }
+.pop { position: absolute; left: 0; top: calc(100% + 6px); z-index: 2; min-width: 190px; font: 14px/1.4 var(--sans);
+       background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 8px;
+       box-shadow: 0 8px 24px rgba(10, 20, 40, .14); opacity: 0; transform: translateY(-4px);
+       transition: opacity .15s, transform .15s; pointer-events: none; }
+.tip:hover .pop, .tip:focus-within .pop { opacity: 1; transform: none; }
+.pop small { display: block; color: var(--muted); padding: 2px 6px 6px; }
+.pop span { display: block; padding: 4px 6px; border-radius: 6px; }
+.pop span:first-of-type { background: var(--sky); font-weight: 600; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 14px; color: var(--muted); margin: 0 0 8px; }
+.legend i { display: inline-block; width: 22px; height: 8px; margin-right: 7px; vertical-align: 1px;
+            background: repeating-linear-gradient(135deg, transparent 0 3px, currentColor 3px 5px); border-radius: 2px; }
+.legend .e { color: var(--red); } .legend .s { color: var(--blue); }
+.legend .e i, .legend .s i { color: inherit; }
+.legend b { font-weight: 400; color: var(--muted); }
+
+ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 20px 0 0; }
+ol.steps > li { counter-increment: s; position: relative; padding: 0 0 26px 50px; }
+ol.steps > li::before { content: counter(s); position: absolute; left: 0; top: -2px; width: 32px; height: 32px;
+  border-radius: 50%; border: 2px solid var(--blue); color: var(--blue); font: 600 16px/28px var(--sans); text-align: center; }
+ol.steps > li:not(:last-child)::after { content: ""; position: absolute; left: 15px; top: 34px; bottom: 6px; width: 2px; background: var(--rule); }
+.btn { display: inline-flex; align-items: center; gap: 8px; font: 600 16px var(--sans); color: #fff; background: var(--blue);
+       border: 0; border-radius: 9px; padding: 11px 18px; cursor: pointer; text-decoration: none; margin: 6px 0 4px; }
+@media (prefers-color-scheme: dark) { .btn { color: #0b1422; } }
+.btn:hover { filter: brightness(1.08); }
+.btn[aria-disabled] { opacity: .5; cursor: default; filter: none; }
+.path { display: flex; align-items: stretch; margin: 8px 0 6px; max-width: 100%; }
+.path code { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; font: 14px/1 ui-monospace, "SF Mono", Menlo, monospace;
+             padding: 11px 12px; background: var(--sky); border: 1px solid var(--rule); border-right: 0; border-radius: 8px 0 0 8px; }
+.path button { font: 600 14px var(--sans); color: var(--blue); background: var(--paper); border: 1px solid var(--rule);
+               border-radius: 0 8px 8px 0; padding: 0 14px; cursor: pointer; }
+kbd { font: 14px var(--sans); border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; }
+.note { font-size: 15px; color: var(--muted); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px 32px; margin-top: 16px; }
+footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+@media (max-width: 560px) { h1 { font-size: 32px; } .sample { font-size: 19px; padding: 20px; } body { font-size: 16px; } }
+@media (prefers-reduced-motion: reduce) { .pop { transition: none; } }
+</style>
+</head>
+<body>
+<!-- Pompeblêd: shape from the Frisian flag (P.H. Wagemakers & Joh. Koopmans, 1954), public domain via Wikimedia Commons -->
+<svg class="pompebled" viewBox="-13.5 -16.5 30 30" aria-hidden="true" focusable="false"><path d="M0,12A16.143,16.143 0 0,1 -14,-4A7,8 0 0,1 -7,-12A6,8 0 0,1 -1,-5A1,1 0 1,0 1,-5A6,8 0 0,1 7,-12A7,8 0 0,1 14,-4A16.143,16.143 0 0,1 0,12z" fill="#ea2117" transform="rotate(34.695)"/></svg>
+<main>
+  <h1>Iepen Fryske Stavering</h1>
+  <p class="lede">Frisian spell checking for Microsoft Word, including Word for Mac. Free, using the official word list (Foarkarswurdlist).</p>
+
+  <div class="sample" aria-label="Example: a Frisian sentence with two words marked">
+    Us <span class="tip" tabindex="0"><span class="sq std">achterbân</span><span class="pop" role="tooltip"><small>Net de foarkarsfoarm</small><span>efterbân</span></span></span>
+    hat in soad fragen oer it
+    <span class="tip" tabindex="0"><span class="sq err">hus</span><span class="pop" role="tooltip"><small>Net yn ’e wurdlist</small><span>hûs</span><span>hús</span><span>hoes</span></span></span>
+    oan ’e dyk.
+  </div>
+  <div class="legend">
+    <span class="e"><i></i>Not in the word list</span>
+    <span class="s"><i></i>Has a preferred spelling</span>
+    <b>Hover or tap a marked word to see the suggestions.</b>
+  </div>
+
+  <h2>Install it in Word for Mac</h2>
+  <p>It takes about two minutes. You only do this once.</p>
+  <ol class="steps">
+    <li>
+      <h3>Download the add-in file</h3>
+      <a class="btn" id="download" download="iepen-fryske-stavering.xml" aria-disabled="true">Download iepen-fryske-stavering.xml</a>
+      <p class="note" id="dlnote">A small settings file that tells Word where to find the spell checker.</p>
+    </li>
+    <li>
+      <h3>Open Word’s add-in folder</h3>
+      <p>In Finder, press <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>G</kbd>, paste this location and press Return:</p>
+      <div class="path"><code id="wefpath">~/Library/Containers/com.microsoft.Word/Data/Documents</code><button id="copy" type="button">Copy</button></div>
+      <p class="note">If the folder can’t be found, open and quit Word once, then try again.</p>
+    </li>
+    <li>
+      <h3>Put the file in a folder called “wef”</h3>
+      <p>Create a new folder there named <strong>wef</strong> (<em>File → New Folder</em>), unless it already exists, and drag the downloaded file into it.</p>
+    </li>
+    <li>
+      <h3>Restart Word</h3>
+      <p>Quit Word completely with <kbd>⌘</kbd> <kbd>Q</kbd> and open it again. Click <strong>Iepen Fryske Stavering</strong> on the Home tab. Don’t see the button? Click <em>Add-ins</em> on the Home tab and choose it from the list. In older Word versions it’s under <em>Insert → My Add-ins</em>.</p>
+    </li>
+  </ol>
+
+  <h2>Using it</h2>
+  <p>The panel on the right checks your document when it opens and again whenever you pause typing.</p>
+  <p><strong>First, mark your Frisian text.</strong> The add-in only checks text that is marked as Frisian. Select it and click <em>Seleksje as Frysk</em> in the panel, or <em>Hiel dokumint as Frysk</em> for everything. Word then stops checking that text with Dutch or English, so only the Frisian squiggles are left. Text you type in a Frisian paragraph stays Frisian.</p>
+  <div class="cols">
+    <div>
+      <h3>In the text</h3>
+      <p>Marked words get a red or blue squiggle. Click one for up to three suggestions, and pick one to replace the word.</p>
+    </div>
+    <div>
+      <h3>In the panel</h3>
+      <p>Every issue with suggestions. <em>Negearje</em> ignores a word for now; <em>Taheakje</em> adds it to your own list for good.</p>
+    </div>
+    <div>
+      <h3>Other languages</h3>
+      <p>Dutch or English text is left to Word’s own spell check. Marked something as Frisian by mistake? Select it, choose <em>Tools → Language</em> and pick the right language.</p>
+    </div>
+    <div>
+      <h3>Your text stays private</h3>
+      <p>Checking happens inside Word on your own computer. Nothing you write is sent anywhere.</p>
+    </div>
+  </div>
+  <p class="note">The squiggles in the text need Word 16.85 or newer with a Microsoft 365 subscription. Other versions show the panel only. Want to try the checker first? <a href="taskpane.html">Test it in your browser</a>.</p>
+
+  <h2>Word on the web and Windows</h2>
+  <p><strong>Word on the web:</strong> go to <em>Home → Add-ins → More Add-ins → My Add-ins</em>, choose <em>Upload My Add-in</em> and select the downloaded file. The menu names can differ slightly between versions.</p>
+  <p><strong>Word for Windows</strong> has no Frisian spell checker from Microsoft either. The add-in works there too, but Windows has no simple add-in folder like the Mac.</p>
+  <p class="note"><strong>Advanced:</strong> if you’re comfortable with PowerShell, a script installs it for you, with no administrator rights needed. It’s in the <a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/tools/install_windows.ps1">tools folder on GitHub</a>; the <a href="https://github.com/iappyx/iepen-fryske-stavering#word-for-windows">instructions</a> explain how to run and remove it.</p>
+
+  <h2>Removing it</h2>
+  <p>Delete <strong>iepen-fryske-stavering.xml</strong> from the <strong>wef</strong> folder (step 2) and restart Word.</p>
+
+  <footer>
+    <p>Made by <strong>iappyx</strong>. The add-in code is © 2026 iappyx and open source under the <a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/LICENSE">MIT License</a>.</p>
+    <p>The word list is the Fryske Akademy’s <em>Foarkarswurdlist</em> (version 2016), © Fryske Akademy, licensed under the <a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/dict/gpl.txt">GNU GPL v3</a>, based on the official spelling ratified by the Provinsje Fryslân. Checking happens on your own computer; your text is never sent anywhere. This project is not affiliated with or endorsed by the Fryske Akademy or Microsoft.</p>
+    <p><a href="support.html">Support</a> · <a href="terms.html">Terms of use</a> · <a href="privacy.html">Privacy statement</a></p>
+    <p><a id="source" href="#">Source code on GitHub</a></p>
+  </footer>
+</main>
+<script>
+(function () {
+  var base = new URL('.', location.href).href;
+  var dl = document.getElementById('download');
+  var note = document.getElementById('dlnote');
+
+  // The add-in file is made from the template for the address this page is served from.
+  if (location.protocol === 'https:') {
+    fetch('manifest.template.xml', { cache: 'no-store' }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    }).then(function (t) {
+      var xml = t.split('{{BASE_URL}}').join(base).split('{{ORIGIN}}').join(location.origin);
+      dl.href = URL.createObjectURL(new Blob([xml], { type: 'application/xml' }));
+      dl.removeAttribute('aria-disabled');
+    }).catch(function () {
+      note.textContent = 'The add-in file couldn’t be prepared. Reload the page to try again.';
+    });
+  } else {
+    note.textContent = 'Open this page from its https:// address to download the add-in file.';
+  }
+
+  document.getElementById('copy').addEventListener('click', function () {
+    var b = this, text = document.getElementById('wefpath').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+      b.textContent = 'Copied';
+      setTimeout(function () { b.textContent = 'Copy'; }, 1600);
+    }, function () {
+      var r = document.createRange(); r.selectNodeContents(document.getElementById('wefpath'));
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    });
+  });
+
+  // Link to the repository: YOURNAME.github.io/REPO -> github.com/YOURNAME/REPO
+  var m = location.hostname.match(/^([^.]+)\.github\.io$/);
+  var src = document.getElementById('source');
+  if (m) src.href = 'https://github.com/' + m[1] + '/' + (location.pathname.split('/')[1] || '');
+  else src.parentNode.remove();
+})();
+</script>
+</body>
+</html>

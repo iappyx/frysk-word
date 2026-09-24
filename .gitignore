@@ -1,0 +1,4 @@
+# macOS Finder files
+.DS_Store
+# generated locally by tools/make_manifest.sh
+manifest.xml
