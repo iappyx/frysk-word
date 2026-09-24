@@ -2,3 +2,5 @@
 .DS_Store
 # generated locally by tools/make_manifest.sh
 manifest.xml
+# Microsoft store submission files, kept locally for now
+store/
