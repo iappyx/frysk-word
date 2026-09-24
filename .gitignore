@@ -4,3 +4,5 @@
 manifest.xml
 # Microsoft store submission files, kept locally for now
 store/
+# local helper script
+start.sh
