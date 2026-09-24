@@ -53,17 +53,6 @@ and `tools/install_in_word.sh` copies it into Word. On recent macOS versions,
 Terminal may not be allowed into Word's folder; use Finder then, as the
 website describes.
 
-## Microsoft store
-
-`store/iepen-fryske-stavering.xml` is the add-in file for submitting to
-Microsoft's add-in store (Partner Center). It's made from
-`manifest.template.xml` for `https://iappyx.github.io/iepen-fryske-stavering/`.
-After changing the template, recreate it:
-
-```
-bash tools/make_manifest.sh https://iappyx.github.io/iepen-fryske-stavering/ && mv manifest.xml store/iepen-fryske-stavering.xml
-```
-
 ## Word for Windows
 
 Word for Windows has no folder like the Mac's `wef` folder, so the website's
