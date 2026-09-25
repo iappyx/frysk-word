@@ -114,6 +114,8 @@ italics, so it stays in the document.
 - **Negearje:** ignores the word until you close the add-in panel.
 - **Taheakje:** adds the word to your personal list, which is kept between
   sessions.
+- **Myn wurden:** the added and ignored words, at the bottom of the panel.
+  Click **×** next to a word to take it off the list; it's checked again.
 
 ## Updating the word list
 

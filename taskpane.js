@@ -22,6 +22,10 @@ const T = {
   markFailed: 'Markearjen mislearre:',
   textChanged: 'De tekst is krekt feroare; it dokumint wurdt opnij kontrolearre.',
   actionFailed: 'Dat slagge net:',
+  myWords: n => 'Myn wurden (' + n + ')',
+  addedWords: 'Taheakke',
+  ignoredWords: 'Negearre (oant it paniel ticht giet)',
+  removeWord: w => w + ' weihelje',
 };
 
 const FY = 'FrisianNetherlands';
@@ -319,7 +323,49 @@ function ignoreWord(word, forever) {
   if (forever) store.set('added', [...added]);
   cache.clear();
   paras.forEach(p => { if (p.issues.some(is => is.word === word)) forceKeys.add(p.key); });
+  renderWords();
   schedule(50);
+}
+
+// Take a word off the personal list (Taheakje) or out of this session's ignored words
+// (Negearje); it's checked again everywhere, so its squiggles come back.
+function unignoreWord(word, forever) {
+  (forever ? added : sessionIgnore).delete(word);
+  if (forever) store.set('added', [...added]);
+  cache.clear();
+  forceAll = true;
+  renderWords();
+  schedule(50);
+}
+
+// "Myn wurden": the added and ignored words, each with a button to remove it.
+// Hidden while both lists are empty.
+function renderWords() {
+  const box = $('words'), body = $('wordsBody');
+  body.textContent = '';
+  const groups = [[T.addedWords, added, true], [T.ignoredWords, sessionIgnore, false]];
+  for (const [label, set, forever] of groups) {
+    if (!set.size) continue;
+    const h = document.createElement('div');
+    h.className = 'wgroup'; h.textContent = label;
+    const list = document.createElement('div');
+    list.className = 'wlist';
+    for (const w of [...set].sort((a, b) => a.localeCompare(b, 'fy'))) {
+      const item = document.createElement('span');
+      item.className = 'wchip';
+      item.append(w);
+      const x = document.createElement('button');
+      x.className = 'wx'; x.textContent = '×';
+      x.title = x.ariaLabel = T.removeWord(w);
+      x.onclick = () => unignoreWord(w, forever);
+      item.append(x);
+      list.append(item);
+    }
+    body.append(h, list);
+  }
+  const n = added.size + sessionIgnore.size;
+  box.hidden = !n;
+  $('wordsTitle').textContent = T.myWords(n);
 }
 
 async function onPopupAction(args) {
@@ -447,6 +493,7 @@ function bindOptions() {
   $('markSel').onclick = () => markFrisian(false);
   $('markDoc').onclick = () => markFrisian(true);
   $('checkNow').onclick = () => { forceAll = true; schedule(0); };
+  renderWords();
 }
 
 async function loadDictionary() {
