@@ -3,6 +3,8 @@
 A Word add-in that checks **Frisian (Frysk) spelling** in Microsoft Word,
 including Word for Mac, which has no Frisian spell checker of its own.
 
+![Iepen Fryske Stavering in Word for Mac: a blue squiggle under achterbân with the suggestion efterbân, a red squiggle under hus, and the side panel listing both words with suggestions](assets/IepenFryskeStavering.png)
+
 - **Squiggles in the text:** red for words that aren't in the word list, blue
   for words that have a preferred spelling (*achterbân* → *efterbân*). Click one
   to pick a suggestion.
