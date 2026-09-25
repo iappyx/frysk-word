@@ -137,7 +137,7 @@ Commit the changed files and GitHub Pages will serve the new list.
   misspellings and real Frisian sentences. The two agree on 99.998% of lines.
 - **Add-in:** tested against a simulated Word document (squiggles, popup
   actions, replacing, ignoring, the personal list, and switching squiggles
-  off). It still needs a first run in real Word.
+  off).
 
 ## License
 
