@@ -147,7 +147,7 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--rule);
 
   <h2>Using it</h2>
   <p>The panel on the right checks your document when it opens and again whenever you pause typing.</p>
-  <p><strong>First, mark your Frisian text.</strong> The add-in only checks text that is marked as Frisian. Select it and click <em>Seleksje as Frysk</em> in the panel, or <em>Hiel dokumint as Frysk</em> for everything. Word then stops checking that text with Dutch or English, so only the Frisian squiggles are left. Text you type in a Frisian paragraph stays Frisian.</p>
+  <p><strong>First, mark your Frisian text.</strong> The add-in only checks text that is marked as Frisian. Select it and click <em>Seleksje as Frysk</em> in the panel, or <em>Hiel dokumint as Frysk</em> for everything. Word then stops checking that text as Dutch or English, so only the Frisian squiggles are left. Text you type in a Frisian paragraph stays Frisian.</p>
   <div class="cols">
     <div>
       <h3>In the text</h3>
@@ -155,7 +155,7 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--rule);
     </div>
     <div>
       <h3>In the panel</h3>
-      <p>Every issue with suggestions. <em>Negearje</em> ignores a word for now; <em>Taheakje</em> adds it to your own list for good.</p>
+      <p>Every issue with suggestions. <em>Negearje</em> ignores a word until you close the panel; <em>Taheakje</em> adds it to your own list for good.</p>
     </div>
     <div>
       <h3>Other languages</h3>
@@ -166,19 +166,19 @@ footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--rule);
       <p>Checking happens inside Word on your own computer. Nothing you write is sent anywhere.</p>
     </div>
   </div>
-  <p class="note">The squiggles in the text need Word 16.85 or newer with a Microsoft 365 subscription. Other versions show the panel only. Want to try the checker first? <a href="taskpane.html">Test it in your browser</a>.</p>
+  <p class="note">The squiggles in the text need Word for Mac 16.85 or newer (or a current Word for Windows) with a Microsoft 365 subscription. Other versions show the panel only. Want to try the checker first? <a href="taskpane.html">Test it in your browser</a>.</p>
 
   <h2>Word on the web and Windows</h2>
-  <p><strong>Word on the web:</strong> go to <em>Home → Add-ins → More Add-ins → My Add-ins</em>, choose <em>Upload My Add-in</em> and select the downloaded file. The menu names can differ slightly between versions.</p>
+  <p><strong>Word on the web:</strong> go to <em>Home → Add-ins → More Settings</em>, choose <em>Upload My Add-in</em> and select the downloaded file. The add-in then only works in that browser. The menu names can differ slightly between versions.</p>
   <p><strong>Word for Windows</strong> has no Frisian spell checker from Microsoft either. The add-in works there too, but Windows has no simple add-in folder like the Mac.</p>
   <p class="note"><strong>Advanced:</strong> if you’re comfortable with PowerShell, a script installs it for you, with no administrator rights needed. It’s in the <a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/tools/install_windows.ps1">tools folder on GitHub</a>; the <a href="https://github.com/iappyx/iepen-fryske-stavering#word-for-windows">instructions</a> explain how to run and remove it.</p>
 
   <h2>Removing it</h2>
-  <p>Delete <strong>iepen-fryske-stavering.xml</strong> from the <strong>wef</strong> folder (step 2) and restart Word.</p>
+  <p>Delete <strong>iepen-fryske-stavering.xml</strong> from the <strong>wef</strong> folder (step 3) and restart Word.</p>
 
   <footer>
     <p>Made by <strong>iappyx</strong>. The add-in code is © 2026 iappyx and open source under the <a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/LICENSE">MIT License</a>.</p>
-    <p>The word list is the Fryske Akademy’s <em>Foarkarswurdlist</em> (version 2016), © Fryske Akademy, licensed under the <a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/dict/gpl.txt">GNU GPL v3</a>, based on the official spelling ratified by the Provinsje Fryslân. Checking happens on your own computer; your text is never sent anywhere. This project is not affiliated with or endorsed by the Fryske Akademy or Microsoft.</p>
+    <p>The word list is the Fryske Akademy’s <em>Foarkarswurdlist</em> (version 20160722, 2015 spelling), © Fryske Akademy, licensed under the <a href="https://github.com/iappyx/iepen-fryske-stavering/blob/main/dict/gpl.txt">GNU GPL v3</a>, based on the official spelling ratified by the Provinsje Fryslân. Checking happens on your own computer; your text is never sent anywhere. This project is not affiliated with or endorsed by the Fryske Akademy or Microsoft.</p>
     <p><a href="support.html">Support</a> · <a href="terms.html">Terms of use</a> · <a href="privacy.html">Privacy statement</a></p>
     <p><a id="source" href="#">Source code on GitHub</a></p>
   </footer>

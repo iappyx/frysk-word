@@ -15,7 +15,7 @@ including Word for Mac, which has no Frisian spell checker of its own.
 - **Private:** everything runs inside Word on your own computer. Your text is
   never sent anywhere.
 
-It uses the official word list (*Foarkarswurdlist*, 2015 spelling).
+It uses the official word list (*Foarkarswurdlist*, version 20160722, 2015 spelling).
 
 ## Install
 
@@ -30,8 +30,8 @@ folder, and restart Word.
 - **Marking text as Frisian** needs a recent Word desktop version (API set
   WordApiDesktop 1.3). Without it, the add-in checks all text and the marking
   buttons are hidden. Word on the web doesn't support it.
-- **Other Word versions** get the side panel without squiggles. It also works in
-  Word for Windows and Word on the web.
+- **Word for Windows and Word on the web:** the add-in works there too.
+- **Older Word versions** show the side panel without squiggles.
 
 ## Hosting your own copy
 
@@ -41,8 +41,8 @@ hosted on the internet; GitHub Pages does that for free. The website's
 download button automatically creates an add-in file for the address it's
 served from.
 
-1. **Put the files on GitHub.** Create a repository called `iepen-fryske-stavering` and
-   upload everything in this folder.
+1. **Put the files on GitHub.** Create a repository (for example
+   `iepen-fryske-stavering`) and upload everything in this folder.
 2. **Turn on GitHub Pages.** In the repository go to **Settings → Pages**, set
    *Source* to **Deploy from a branch**, and choose branch `main` and folder
    `/ (root)`. After about a minute your add-in is live at
@@ -103,9 +103,6 @@ italics, so it stays in the document.
   keeps its own language, so mark it again if needed.
 - If you change the language through Word's menu, the panel picks up the change
   as soon as you click or move the cursor in the text.
-- Older versions of this add-in could switch off Word's own check ("Do not
-  check spelling or grammar"). Marking text as Frisian switches that back on.
-  You can also untick it under **Tools → Language**.
 
 | | Meaning |
 |---|---|
@@ -114,7 +111,7 @@ italics, so it stays in the document.
 
 - **Suggestions:** click a squiggle to see up to three suggestions (a Word
   limit). The panel shows up to five.
-- **Negearje:** ignores the word until you close the document.
+- **Negearje:** ignores the word until you close the add-in panel.
 - **Taheakje:** adds the word to your personal list, which is kept between
   sessions.
 
@@ -127,7 +124,7 @@ download:
 bash tools/update_dictionary.sh
 ```
 
-Commit the changed files and GitHub Pages will serve the new list.
+Upload the changed files to GitHub, and GitHub Pages will serve the new list.
 
 ## How it was tested
 
